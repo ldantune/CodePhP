@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'PrincipalController@principal')->name('site.index');
+Route::get('/', 'PrincipalController@principal')->name('site.index')->middleware('log.acesso');
 
 Route::get('/sobre-nos', 'SobreNosController@sobreNos')->name('site.sobrenos');
 
@@ -21,11 +22,10 @@ Route::get('/contato', 'ContatoController@contato')->name('site.contato');
 
 Route::post('/contato', 'ContatoController@salvar')->name('site.contato');
 
-Route::get('/login', function(){
-    return 'Login';
-})->name('site.login');
+Route::get('/login', 'LoginController@index')->name('site.login');
+Route::post('/login', 'LoginController@autenticar')->name('site.login');
 
-Route::prefix('/app')->group(function(){
+Route::middleware('autenticacao:padrao,visitante,p3,p4')->prefix('/app')->group(function() {
     Route::get('/clientes', function(){
         return 'Clientes';
     })->name('app.clientes');
