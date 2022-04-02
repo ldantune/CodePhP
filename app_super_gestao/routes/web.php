@@ -19,7 +19,7 @@ Route::get('/sobre-nos', 'SobreNosController@sobreNos')->name('site.sobrenos');
 
 Route::get('/contato', 'ContatoController@contato')->name('site.contato');
 
-Route::post('/contato', 'ContatoController@contato')->name('site.contato');
+Route::post('/contato', 'ContatoController@salvar')->name('site.contato');
 
 Route::get('/login', function(){
     return 'Login';
@@ -39,6 +39,9 @@ Route::prefix('/app')->group(function(){
     })->name('app.produtos');
 });
 
+Route::fallback(function() {
+    echo 'A rota acessada não existe. <a href="'.route('site.index').'">clique aqui</a> para ir para página inicial';
+});
 
 
 
