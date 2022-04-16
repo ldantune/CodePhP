@@ -41,7 +41,7 @@
                                 <td><a href="{{ route('app.fornecedor.excluir', $fornecedor->id) }}">Excluir</a></td>
                                 <td><a href="{{ route('app.fornecedor.editar', $fornecedor->id) }}">Editar</a></td>
                             </tr>
-                            {{-- <tr>
+                            <tr>
                                 <td colspan="6">
                                     <p>Lista de produtos</p>
                                     <table border="1" style="margin:20px">
@@ -61,7 +61,7 @@
                                         </tbody>
                                     </table>
                                 </td>
-                            <tr> --}}
+                            <tr>
                         @endforeach
                     </tbody>
                 </table>
