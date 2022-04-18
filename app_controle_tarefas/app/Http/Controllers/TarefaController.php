@@ -19,9 +19,9 @@ class TarefaController extends Controller
     public function index()
     {
 
-        $id = Auth::user()->id;
-            $nome = Auth::user()->name;
-            $email = Auth::user()->email;
+        $id = auth()->user()->id;
+        $nome = auth()->user()->name;
+        $email = auth()->user()->email;
 
             return "ID: $id | Nome: $nome | E-mail: $email";
 
