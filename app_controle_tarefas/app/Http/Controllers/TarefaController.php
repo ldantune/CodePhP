@@ -90,7 +90,13 @@ class TarefaController extends Controller
      */
     public function edit(Tarefa $tarefa)
     {
-        //
+        $user_id = auth()->user()->id;
+
+        if($tarefa->user_id == $user_id) {
+            return view('tarefa.edit', ['tarefa' => $tarefa]);
+        }
+
+        return view('acesso-negado');
     }
 
     /**
@@ -102,7 +108,27 @@ class TarefaController extends Controller
      */
     public function update(Request $request, Tarefa $tarefa)
     {
-        //
+        $regras = [
+            'tarefa' => 'required|min:3|max:200',
+            'data_limite_conclusao' => 'required',
+        ];
+
+        $feedback = [
+            'tarefa.required' => 'O campo tarefa deve ser preenchido',
+            'tarefa.min' => 'O campo descrição deve ter no mínimo 3 caracteres',
+            'tarefa.max' => 'O campo descrição deve ter no máximo 2000 caracteres',
+            'data_limite_conclusao.required' => 'O campo data deve ser preenchido',
+
+        ];
+
+        $request->validate($regras, $feedback);
+
+        if(!$tarefa->user_id == auth()->user()->id) {
+            return view('acesso-negado');
+        }
+
+        $tarefa->update($request->all());
+        return redirect()->route('tarefa.show', ['tarefa' => $tarefa->id]);
     }
 
     /**
@@ -113,6 +139,10 @@ class TarefaController extends Controller
      */
     public function destroy(Tarefa $tarefa)
     {
-        //
+        if(!$tarefa->user_id == auth()->user()->id) {
+            return view('acesso-negado');
+        }
+        $tarefa->delete();
+        return redirect()->route('tarefa.index');
     }
 }
