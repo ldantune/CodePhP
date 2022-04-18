@@ -81,7 +81,10 @@ class TarefaController extends Controller
 
         $request->validate($regras, $feedback);
 
-        $tarefa = Tarefa::create($request->all());
+        $dados = $request->all('tarefa', 'data_limite_conclusao');
+        $dados['user_id'] = auth()->user()->id;
+
+        $tarefa = Tarefa::create($dados);
 
         $destinario = auth()->user()->email; //e-mail do usuário logado (autenticado)
 
