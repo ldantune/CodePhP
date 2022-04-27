@@ -50,7 +50,15 @@
         <!-- fim do card de busca -->
         <card-component titulo="Relação de marcas">
           <template v-slot:conteudo>
-            <table-component></table-component>
+            <table-component
+                :dados="marcas"
+                :titulos="{
+                    id: {titulo: 'ID', tipo: 'texto'},
+                    nome: {titulo: 'Nome', tipo: 'texto'},
+                    imagem: {titulo: 'Imagem', tipo: 'imagem'},
+                    create_at: {titulo: 'Data de criação', tipo: 'data'},
+                }"
+            ></table-component>
           </template>
 
           <template v-slot:rodape>
@@ -134,15 +142,24 @@ export default {
         arquivoImagem: [],
         transacaoStatus: '',
         transacaoDetalhes: {},
+        marcas: []
     };
   },
   methods: {
-    carregarImagem(e) {
-      this.arquivoImagem = e.target.files;
+    carregarLista() {
+        axios.get(this.urlBase)
+            .then(response => {
+                this.marcas = response.data
+                console.log(this.marcas)
+            })
+            .catch(errors =>{
+                console.log(errors)
+            })
     },
+    carregarImagem(e) {
+        this.arquivoImagem = e.target.files;
+        },
     salvar(){
-        console.log(this.nomeMarca, this.arquivoImagem[0])
-
         let formData = new FormData();
         formData.append('nome', this.nomeMarca)
         formData.append('imagem', this.arquivoImagem[0])
@@ -167,10 +184,11 @@ export default {
                     mensagem: errors.response.data.message,
                     dados: errors.response.data.errors
                 }
-                console.log(errors)
-                toaster.show(`Hey! I'm here`);
             })
     }
   },
+  mounted(){
+      this.carregarLista()
+  }
 };
 </script>
