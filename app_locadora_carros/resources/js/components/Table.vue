@@ -4,6 +4,7 @@
             <thead>
                 <tr >
                     <th scope="col" v-for="t, key in titulos" :key="key">{{t.titulo}}</th>
+                    <th class="text-center" v-if="visualizar.visivel || atualizar || remover">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +18,11 @@
                             <img :src="'/storage/'+valor" width="30" height="30">
                         </span>
                     </td>
+                    <td class="text-center" v-if="visualizar.visivel || atualizar || remover">
+                        <button v-if="visualizar.visivel" class="btn btn-outline-primary btn-sm" :data-toggle="visualizar.dataToggle" :data-target="visualizar.dataTarget" @click="setStore(obj)">Visualizar</button>
+                        <button v-if="atualizar" class="btn btn-outline-secondary btn-sm">Atualizar</button>
+                        <button v-if="remover" class="btn btn-outline-danger btn-sm">Excluir</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -26,14 +32,15 @@
 <script>
     export default {
         props: ['dados', 'titulos', 'atualizar', 'visualizar', 'remover'],
-        // methods: {
-        //     setStore(obj) {
-        //         this.$store.state.transacao.status = ''
-        //         this.$store.state.transacao.mensagem = ''
-        //         this.$store.state.transacao.dados = ''
-        //         this.$store.state.item = obj
-        //     }
-        // },
+        methods: {
+            setStore(obj) {
+                console.log(obj)
+                this.$store.state.transacao.status = ''
+                this.$store.state.transacao.mensagem = ''
+                this.$store.state.transacao.dados = ''
+                this.$store.state.item = obj
+            }
+        },
         computed: {
             dadosFiltrados() {
 
